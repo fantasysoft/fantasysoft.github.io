@@ -1,182 +1,315 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI编程工具导航</title>
+    <title>GAIDN | 全球AI开发者网络 (Global AI Developer Network)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        dark: '#050505',
+                        surface: '#111111',
+                        primary: '#3b82f6',
+                        accent: '#8b5cf6',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* 全局样式 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
         body {
-            background: #f5f5f7;
-            color: #1d1d1f;
-            line-height: 1.6;
+            background-color: #050505;
+            color: #e5e5e5;
+            /* 科技感点阵背景 */
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 32px 32px;
+            overflow-x: hidden;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #60a5fa 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* 头部样式 */
-        header {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 1rem;
-            position: sticky;
-            top: 0;
-            box-shadow: 0 1px 10px rgba(0,0,0,0.1);
+        /* 玻璃拟态卡片 */
+        .glass-card {
+            background: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px -10px rgba(139, 92, 246, 0.2);
         }
 
-        h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin: 2rem 0;
-            font-weight: 600;
-        }
-
-        /* 主要内容区域 */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* 工具卡片网格布局 */
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        /* 工具分类 */
-        .category {
-            margin-bottom: 3rem;
-        }
-
-        .category-title {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: #1d1d1f;
-            font-weight: 600;
-        }
-
-        /* 工具卡片样式 */
-        .tool-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .tool-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .tool-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .tool-description {
-            color: #515154;
-            margin-bottom: 1rem;
-        }
-
-        .tool-link {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: #0071e3;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            transition: background 0.3s ease;
-        }
-
-        .tool-link:hover {
-            background: #0077ed;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .tools-grid {
-                grid-template-columns: 1fr;
-            }
+        /* 背景环境光晕 */
+        .glow-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
         }
     </style>
 </head>
-<body>
-    <header>
-        <h1>AI编程工具导航</h1>
-    </header>
+<body class="antialiased selection:bg-accent selection:text-white">
 
-    <div class="container">
-        <!-- 代码助手类 -->
-        <section class="category">
-            <h2 class="category-title">代码助手</h2>
-            <div class="tools-grid">
-                <div class="tool-card">
-                    <h3 class="tool-name">GitHub Copilot</h3>
-                    <p class="tool-description">由OpenAI开发的AI代码助手，可实时提供代码建议和自动补全。</p>
-                    <a href="https://github.com/features/copilot" class="tool-link">了解更多</a>
+    <div class="glow-blob bg-blue-600 w-[500px] h-[500px] top-[-200px] left-1/2 -translate-x-1/2"></div>
+    <div class="glow-blob bg-purple-600 w-[400px] h-[400px] top-[20%] right-[-100px]"></div>
+
+    <nav class="fixed w-full z-50 glass-card border-b border-white/5 rounded-none">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2 font-mono font-bold text-xl tracking-wider">
+                    <span class="text-gray-500">&lt;</span><span class="text-white">GAIDN</span><span class="text-primary">/&gt;</span>
                 </div>
-                <div class="tool-card">
-                    <h3 class="tool-name">Amazon CodeWhisperer</h3>
-                    <p class="tool-description">亚马逊推出的AI编程助手，支持多种编程语言和IDE。</p>
-                    <a href="https://aws.amazon.com/codewhisperer/" class="tool-link">了解更多</a>
-                </div>
-                <div class="tool-card">
-                    <h3 class="tool-name">Tabnine</h3>
-                    <p class="tool-description">基于AI的代码补全工具，支持所有主流编程语言。</p>
-                    <a href="https://www.tabnine.com/" class="tool-link">了解更多</a>
+                <div class="hidden md:block">
+                    <div class="flex items-baseline space-x-8 text-sm font-medium">
+                        <a href="#about" class="text-gray-400 hover:text-white transition">缘起与生态</a>
+                        <a href="#values" class="text-gray-400 hover:text-white transition">价值观</a>
+                        <a href="#insights" class="text-gray-400 hover:text-white transition">商业洞察</a>
+                        <a href="#join" class="bg-white/10 hover:bg-white/20 border border-white/10 px-5 py-2 rounded-full transition text-white">加入网络</a>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </nav>
 
-        <!-- 代码转换工具 -->
-        <section class="category">
-            <h2 class="category-title">代码转换</h2>
-            <div class="tools-grid">
-                <div class="tool-card">
-                    <h3 class="tool-name">ChatGPT</h3>
-                    <p class="tool-description">强大的AI语言模型，可用于代码转换、解释和优化。</p>
-                    <a href="https://chat.openai.com/" class="tool-link">了解更多</a>
+    <section class="pt-32 pb-20 lg:pt-48 lg:pb-32 px-4 max-w-7xl mx-auto text-center min-h-[80vh] flex flex-col justify-center items-center relative z-10">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm font-mono mb-8 animate-pulse">
+            <i class="fa-solid fa-terminal"></i> Hello, World!
+        </div>
+        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight text-white">
+            终于等到你！<br>
+            <span class="text-gradient">一个为AI工程师而生的共创社区</span>
+        </h1>
+        <p class="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-gray-400 mb-10 leading-relaxed">
+            我们是 <strong class="text-gray-200">Global AI Developer Network</strong> (全球AI开发者网络)。<br>
+            如果你渴望与顶尖同行者交流、共创，如果你相信技术正在重塑未来。<br>
+            那么，欢迎你，回家。
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#join" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-3.5 px-8 rounded-full shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:scale-105 transition-all">
+                获取社区通行证
+            </a>
+            <a href="#insights" class="bg-transparent border border-gray-600 hover:bg-white/5 text-white font-bold py-3.5 px-8 rounded-full transition-all">
+                阅读独家商业洞察
+            </a>
+        </div>
+    </section>
+
+    <section id="about" class="py-24 border-y border-white/5 bg-black/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:flex lg:items-center lg:gap-16">
+                <div class="lg:w-1/2 mb-12 lg:mb-0">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white">为什么是 <span class="text-gradient">GAIDN</span>？</h2>
+                    <div class="space-y-5 text-gray-400 leading-relaxed text-lg">
+                        <p>今年2月22日，我们写下了关于 GAIDN 的初步构想。我们认为，<strong>AI不仅是工具，更是一种全新的思考方式和创造范式。</strong>我们需要一个专属于新一代AI开发者的社区。</p>
+                        <p>短短几个月，GAIDN的成长超出了所有预期。一个高密度、高价值的共创社区正在形成，并从一个主群快速“裂变”出了几十个专注不同领域的子群。</p>
+                        <p class="pl-4 border-l-4 border-accent text-gray-300 italic text-base">
+                            "这种裂变，不是管理的结果，而是共识的驱动。它证明了GAIDN的核心价值正在吸引志同道合的AI工程师。"
+                        </p>
+                    </div>
                 </div>
-                <div class="tool-card">
-                    <h3 class="tool-name">CodeConverter</h3>
-                    <p class="tool-description">在线代码转换工具，支持多种编程语言之间的转换。</p>
-                    <a href="https://codeconverter.ai/" class="tool-link">了解更多</a>
+                <div class="lg:w-1/2 w-full">
+                    <div class="glass-card p-6 md:p-8 rounded-2xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-primary/20 text-primary text-xs px-3 py-1 rounded-bl-lg font-mono">Network Live</div>
+                        <h3 class="text-white font-bold mb-6 flex items-center gap-2 border-b border-white/10 pb-4">
+                            <i class="fa-solid fa-network-wired text-accent"></i> 活跃子社群节点
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-3 py-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-md text-sm font-mono cursor-default"># AI-ProductHunters</span>
+                            <span class="px-3 py-1.5 bg-purple-500/10 border border-purple-500/20 text-purple-400 rounded-md text-sm font-mono cursor-default"># Sora2创造者</span>
+                            <span class="px-3 py-1.5 bg-green-500/10 border border-green-500/20 text-green-400 rounded-md text-sm font-mono cursor-default"># AI出海先锋</span>
+                            <span class="px-3 py-1.5 bg-pink-500/10 border border-pink-500/20 text-pink-400 rounded-md text-sm font-mono cursor-default"># VibeCoding</span>
+                            <span class="px-3 py-1.5 bg-white/5 border border-white/10 text-gray-300 rounded-md text-sm cursor-default"><i class="fa-solid fa-location-dot mr-1"></i> 北京</span>
+                            <span class="px-3 py-1.5 bg-white/5 border border-white/10 text-gray-300 rounded-md text-sm cursor-default"><i class="fa-solid fa-location-dot mr-1"></i> 深圳 / 大湾区</span>
+                            <span class="px-3 py-1.5 border border-dashed border-white/20 text-gray-500 rounded-md text-sm cursor-default">+ 更多细分领域...</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- AI开发平台 -->
-        <section class="category">
-            <h2 class="category-title">AI开发平台</h2>
-            <div class="tools-grid">
-                <div class="tool-card">
-                    <h3 class="tool-name">Google Colab</h3>
-                    <p class="tool-description">免费的云端Jupyter笔记本环境，适合AI和机器学习开发。</p>
-                    <a href="https://colab.research.google.com/" class="tool-link">了解更多</a>
+    <section id="values" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">我们的引力源：三大价值观</h2>
+                <p class="text-gray-400 text-lg">这是我们社区的基石，也是我们向你发出的邀请函。</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass-card p-8 rounded-2xl">
+                    <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center mb-6 text-2xl border border-blue-500/20">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">1. 崇尚AI原生</h3>
+                    <div class="text-xs font-mono text-gray-500 mb-4 tracking-widest uppercase">AI Native</div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        我们不只是“使用AI”，我们“生于AI”。从第一性原理出发，构建完全基于AI能力的新物种。创造全新的AI工作流、AI Agent赋能的新产品形态。
+                    </p>
                 </div>
-                <div class="tool-card">
-                    <h3 class="tool-name">Hugging Face</h3>
-                    <p class="tool-description">AI模型共享和部署平台，提供大量预训练模型。</p>
-                    <a href="https://huggingface.co/" class="tool-link">了解更多</a>
+
+                <div class="glass-card p-8 rounded-2xl">
+                    <div class="w-12 h-12 bg-purple-500/10 text-purple-400 rounded-xl flex items-center justify-center mb-6 text-2xl border border-purple-500/20">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">2. 工程师导向</h3>
+                    <div class="text-xs font-mono text-gray-500 mb-4 tracking-widest uppercase">Engineer-Oriented</div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        摒弃浮夸的噱头，追求扎实的技术分享与深度的代码交流。由工程师发起、服务并主导。在这里，Code is Law，Talk is Cheap。
+                    </p>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl">
+                    <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center mb-6 text-2xl border border-emerald-500/20">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">3. 落地创造价值</h3>
+                    <div class="text-xs font-mono text-gray-500 mb-4 tracking-widest uppercase">Implementation</div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        我们不是AI的“清谈馆”，而是“价值创造的加速器”。一个好Idea不去落地价值即为零。社区致力于连接资源，真正用AI创造商业与社会价值。
+                    </p>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+
+    <section id="insights" class="py-24 border-y border-white/5 bg-[#08080c] relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-16">
+                <span class="text-primary font-mono text-sm tracking-widest uppercase mb-2 block"><i class="fa-solid fa-lightbulb mr-2"></i>GAIDN Exclusive Insights</span>
+                <h2 class="text-3xl md:text-5xl font-bold mb-6 text-white">深耕期已至：AI Native 的商业法则</h2>
+                <p class="text-gray-400 text-lg max-w-3xl">
+                    市场正处于转折点：从“在大模型上套壳”的狂热，转向“用AI重构工作流”的深耕期。理解真正的 AI Native，是未来几年最大的创富机会。
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-5">
+                    <div class="glass-card p-8 rounded-2xl h-full border-l-4 border-l-accent">
+                        <h3 class="text-2xl font-bold text-white mb-6">模式颠覆：从 SaaS 到 "Service-as-a-Software"</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex items-center text-gray-500 font-mono text-sm mb-2">
+                                    <i class="fa-solid fa-xmark text-red-500 mr-2"></i> 旧模式 (SaaS)
+                                </div>
+                                <p class="text-gray-400 text-sm">卖工具。赚取有限的 IT 预算，客户需要自己花时间学习和操作软件。</p>
+                            </div>
+                            <div>
+                                <div class="flex items-center text-gray-200 font-mono text-sm mb-2">
+                                    <i class="fa-solid fa-check text-green-500 mr-2"></i> 新模式 (AI Native)
+                                </div>
+                                <p class="text-gray-300 text-sm leading-relaxed">卖结果。企业不再买CRM账号，而是买一个“AI 销售员工”。这直接切入了比 IT 预算大 10 倍的企业<strong class="text-white">人力成本预算 (Headcount Budget)</strong>。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 grid sm:grid-cols-2 gap-4">
+                    <div class="bg-surface border border-white/5 p-6 rounded-xl hover:bg-white/5 transition">
+                        <i class="fa-solid fa-briefcase text-blue-400 text-xl mb-3"></i>
+                        <h4 class="font-bold text-white mb-2">① 垂直领域的深度智能体</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">深入法律合规、医疗研发、跨境电商等只有行家懂的领域，用 Agent 把行业 SOP 固化下来。</p>
+                    </div>
+                    <div class="bg-surface border border-white/5 p-6 rounded-xl hover:bg-white/5 transition">
+                        <i class="fa-solid fa-heart text-pink-400 text-xl mb-3"></i>
+                        <h4 class="font-bold text-white mb-2">② 情感与陪伴经济</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">功能性需求已红海，但情绪价值是无底洞。打造具有长期记忆、性格成长甚至灵魂的虚拟伴侣。</p>
+                    </div>
+                    <div class="bg-surface border border-white/5 p-6 rounded-xl hover:bg-white/5 transition">
+                        <i class="fa-solid fa-screwdriver-wrench text-yellow-400 text-xl mb-3"></i>
+                        <h4 class="font-bold text-white mb-2">③ 开发者工具与基础设施</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">淘金热中卖铲子。AI编码助手、RAG中间件、模型评估。未来软件公司可能只有 1PM + 5AI。</p>
+                    </div>
+                    <div class="bg-surface border border-white/5 p-6 rounded-xl hover:bg-white/5 transition">
+                        <i class="fa-solid fa-wand-magic-sparkles text-emerald-400 text-xl mb-3"></i>
+                        <h4 class="font-bold text-white mb-2">④ 多模态生产力</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">将昂贵的创意生产边际成本降为零。涵盖游戏 3D 资产生成、短剧剧本到视频的一键生成。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 grid md:grid-cols-2 gap-6">
+                <div class="glass-card p-6 rounded-xl flex flex-col justify-center">
+                    <h4 class="font-bold text-white mb-4 border-b border-white/10 pb-2"><i class="fa-solid fa-flag text-red-500 mr-2"></i>中国市场的独特红利</h4>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li>• <strong class="text-gray-200">工程师红利与出海：</strong>打造极致性价比的全球化AI应用。</li>
+                        <li>• <strong class="text-gray-200">具身智能 (Embodied AI)：</strong>结合最强硬件供应链赋能终端。</li>
+                        <li>• <strong class="text-gray-200">超级 App 生态：</strong>依托微信/钉钉开发企业级 Agent。</li>
+                    </ul>
+                </div>
+                <div class="bg-gradient-to-br from-blue-900/20 to-purple-900/20 border border-primary/20 p-6 rounded-xl flex flex-col justify-center">
+                    <h4 class="font-bold text-white mb-4 border-b border-white/10 pb-2"><i class="fa-solid fa-compass text-accent mr-2"></i>给 AI 创业者的忠告</h4>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li>• <strong class="text-white">解决"头发着火"的痛点：</strong>别拿锤子找钉子。</li>
+                        <li>• <strong class="text-white">构建数据飞轮：</strong>用的人越多，积累的数据越多，对手越难追。</li>
+                        <li>• <strong class="text-white">拒绝"套壳"：</strong>必须在工作流 (Workflow) 和专有数据上下功夫。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="join" class="py-32 relative text-center overflow-hidden">
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 blur-[120px] rounded-t-full pointer-events-none"></div>
+        
+        <div class="max-w-3xl mx-auto px-4 relative z-10">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">加入我们，共创AI的未来</h2>
+            <p class="text-xl text-gray-400 mb-12">
+                AI的浪潮不是未来时，而是现在进行时。<br>
+                一个人可以走得很快，但一群人才能走得更远。
+            </p>
+            
+            <div class="glass-card p-10 md:p-12 rounded-3xl inline-block max-w-md w-full shadow-2xl">
+                <i class="fa-brands fa-weixin text-5xl text-[#07C160] mb-6"></i>
+                <h3 class="text-2xl font-bold text-white mb-2">获取 GAIDN 社区通行证</h3>
+                <p class="text-gray-400 text-sm mb-8">微信搜索并关注公众号 <strong class="text-white bg-white/10 px-2 py-0.5 rounded mx-1">[ GAIDN ]</strong></p>
+                
+                <div class="w-48 h-48 bg-white/5 border-2 border-dashed border-gray-600 rounded-xl mx-auto flex flex-col items-center justify-center p-4 mb-8">
+                    <i class="fa-solid fa-qrcode text-4xl text-gray-500 mb-2"></i>
+                    <span class="text-gray-500 text-xs font-bold text-center">在此处替换为<br>公众号二维码图片</span>
+                    </div>
+                
+                <div class="bg-black/50 rounded-lg p-4 font-mono text-sm border border-white/5">
+                    <span class="text-gray-500">在后台回复关键词</span> 
+                    <strong class="text-primary text-lg ml-2 border-b border-primary">加入</strong>
+                </div>
+            </div>
+            
+            <div class="mt-16 text-xl font-mono text-gray-500 font-bold uppercase tracking-widest space-y-2">
+                <p>> Welcome to GAIDN _</p>
+                <p>> Let's build the future, together _</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/5 bg-black py-8 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between text-center md:text-left">
+            <div class="mb-4 md:mb-0">
+                <span class="text-white font-bold tracking-widest text-lg opacity-80">&lt;GAIDN/&gt;</span>
+                <p class="text-xs text-gray-600 font-mono mt-1">&copy; 2024 Global AI Developer Network. All rights reserved.</p>
+            </div>
+            <div class="text-xs text-gray-500 font-mono">
+                Code is Law. Talk is Cheap.
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>
